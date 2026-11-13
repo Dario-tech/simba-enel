@@ -50,24 +50,18 @@ ${mane}
 function initSimbaWalk() {
     const box = document.getElementById("simba-walk");
     if (!box) return;
-    const btn = document.getElementById("simba-btn"), age = document.getElementById("simba-age");
-    box.querySelector(".simba-lions").innerHTML = SIMBA_STAGES.map((_, i) => simbaLionSvg(i)).join("");
+    const btn = document.getElementById("simba-btn");
+    box.querySelector(".simba-lions").innerHTML = simbaLionSvg(0);
     const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let p = 0, running = false, last = 0, raf = 0, shownStage = 0;
+    let p = 0, running = false, last = 0, raf = 0;
 
     function paint() {
-        const stage = simbaStage(p);
+        const stage = 0;
         box.style.setProperty("--p", String(p));
         box.dataset.stage = String(stage);
         box.dataset.done = String(p >= 1);
         box.classList.toggle("walking", running);
-        if (stage !== shownStage) {
-            shownStage = stage;
-            box.classList.remove("pop"); void box.offsetWidth; box.classList.add("pop");
-        }
-        const idle = p === 0 && !running;
-        age.textContent = idle ? "Haz clic en Simba" : simbaLabel(p);
-        btn.setAttribute("aria-label", `Simba, ${simbaLabel(p)}. ${p >= 1 ? "Pulsa para empezar de nuevo" : running ? "Pulsa para pausar" : "Pulsa para que avance y crezca"}`);
+        btn.setAttribute("aria-label", `Simba. ${p >= 1 ? "Pulsa para empezar de nuevo" : running ? "Pulsa para pausar" : "Pulsa para que avance"}`);
     }
 
     function tick(t) {
