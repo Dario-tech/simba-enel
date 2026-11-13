@@ -14,10 +14,10 @@ function loadFrontend() {
         sessionStorage: { getItem: () => null, setItem() {} },
         localStorage: { getItem: () => null, setItem() {} },
         document: { addEventListener() {}, getElementById: () => null },
-        window: {},
+        window: { matchMedia: () => ({ matches: false }) },
         navigator: {},
     });
-    for (const f of ["present", "core", "queries", "history-users"]) vm.runInContext(read(`frontend/js/${f}.js`), ctx, { filename: `${f}.js` });
+    for (const f of ["present", "core", "queries", "history-users", "simba-walk"]) vm.runInContext(read(`frontend/js/${f}.js`), ctx, { filename: `${f}.js` });
     ctx.el = (tag, props = {}) => ({ tag, ...props });  // highlightSql solo necesita la clase y el texto
     // Las const/let de nivel superior no cuelgan del objeto global: se exponen explícitamente.
     Object.assign(ctx, vm.runInContext("({ state, fmtNum, COMMON_PASSWORDS })", ctx));
@@ -142,4 +142,12 @@ test("modo presentación revierte seudónimos en rutas y cuerpos, y bloquea escr
     const off = loadPresent(false);
     assert.equal(off.mask({ esquema: "GCWEB" }).esquema, "GCWEB");
     assert.equal(off.canWrite({ nota: "x" }), true);
+});
+
+test("Simba envejece con el avance: cachorro, joven y adulto", () => {
+    const ctx = loadFrontend();
+    assert.deepEqual([0, 0.33, 0.34, 0.66, 0.67, 1].map(ctx.simbaStage), [0, 0, 1, 1, 2, 2]);
+    assert.equal(ctx.simbaLabel(0), "Cachorro · 0 años");
+    assert.equal(ctx.simbaLabel(1 / 6), "Cachorro · 1 año");
+    assert.equal(ctx.simbaLabel(1), "Adulto · 6 años");
 });

@@ -1033,3 +1033,35 @@ body.dark .hero-icon .ico { color: #0b0e17; }
 .awr-card > p { margin: 0 0 6px; }
 .awr-card > .btn { margin: 8px 0 14px; }
 #history-table td:first-child { white-space: nowrap; }
+
+/* ========== Simba: mascota que crece al avanzar por el camino ========== */
+.simba-walk { --w: 88px; --p: 0; position: relative; height: 68px; margin: -6px 0 16px; user-select: none; }
+.simba-track { position: absolute; inset: 0; pointer-events: none; }
+.simba-track::before, .simba-track::after { content: ""; position: absolute; left: 0; bottom: 24px; border-top: 2px dashed var(--border-strong); right: 0; }
+.simba-track::after { right: auto; width: calc(var(--p) * (100% - var(--w)) + var(--w) / 2); border-top: 2px solid var(--primary); border-radius: 2px; }
+.simba-track i { position: absolute; bottom: 2px; transform: translateX(-50%); font-style: normal; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.simba-track .m1 { left: calc(var(--w) / 2); }
+.simba-track .m2 { left: calc((100% - var(--w)) / 3 + var(--w) / 2); }
+.simba-track .m3 { left: calc((100% - var(--w)) * 2 / 3 + var(--w) / 2); }
+.simba-btn { position: absolute; bottom: 20px; left: calc(var(--p) * (100% - var(--w))); width: var(--w); height: 47px; padding: 0; border: 0; background: none; cursor: pointer; }
+.simba-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 4px; border-radius: var(--r-sm); }
+.simba-lions { position: absolute; inset: 0; }
+.simba-walk .lion { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity .5s var(--ease); overflow: visible; }
+.simba-walk[data-stage="0"] .lion-0, .simba-walk[data-stage="1"] .lion-1, .simba-walk[data-stage="2"] .lion-2 { opacity: 1; }
+.simba-walk.pop .simba-lions { animation: simba-pop .6s var(--ease); }
+.simba-walk:not(.walking)[data-done="false"] .simba-btn:hover .simba-lions { transform: translateY(-2px); transition: transform .2s var(--ease); }
+.simba-walk .leg, .simba-walk .tail { transform-box: fill-box; }
+.simba-walk .leg { transform-origin: 50% 0; }
+.simba-walk .tail { transform-origin: 100% 100%; }
+.simba-walk.walking .simba-lions { animation: simba-bob .5s ease-in-out infinite alternate; }
+.simba-walk.walking .l1, .simba-walk.walking .l4 { animation: simba-step .5s ease-in-out infinite alternate; }
+.simba-walk.walking .l2, .simba-walk.walking .l3 { animation: simba-step .5s ease-in-out infinite alternate-reverse; }
+.simba-walk.walking .tail { animation: simba-wag .6s ease-in-out infinite alternate; }
+.simba-age { position: absolute; right: 0; bottom: -4px; padding: 3px 10px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--muted); font-size: 12px; font-weight: 600; }
+.simba-bubble { position: absolute; right: calc(100% - 18px); top: 2px; padding: 3px 10px; border-radius: 999px; background: var(--primary); color: var(--on-primary); font-size: 12px; font-weight: 700; white-space: nowrap; opacity: 0; pointer-events: none; }
+.simba-walk[data-done="true"] .simba-bubble { animation: simba-roar 2.4s var(--ease) forwards; }
+@keyframes simba-step { from { transform: rotate(-22deg); } to { transform: rotate(22deg); } }
+@keyframes simba-bob { to { transform: translateY(-1.5px); } }
+@keyframes simba-wag { from { transform: rotate(-9deg); } to { transform: rotate(9deg); } }
+@keyframes simba-pop { 40% { transform: scale(1.16); } }
+@keyframes simba-roar { 0% { opacity: 0; transform: scale(.6); } 12%, 78% { opacity: 1; transform: scale(1); } 100% { opacity: 0; } }
